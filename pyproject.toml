@@ -21,7 +21,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-  "Flask"
+  "Flask",
+  "SQLAlchemy"
 ]
 
 [project.urls]
@@ -36,6 +37,7 @@ dependencies = [
   "pytest",
 ]
 [tool.hatch.envs.default.scripts]
+app = "flask --app src/flask_rest_test run --debug"
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = [
