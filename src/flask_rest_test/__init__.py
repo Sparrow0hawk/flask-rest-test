@@ -3,10 +3,13 @@ from sqlalchemy import MetaData, create_engine, text
 
 from .db import add_tables, get_db
 
-def create_app() -> Flask:
+def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+
+    if test_config:
+        app.config.from_mapping(test_config)
 
     @app.route("/")
     def index() -> Response:
