@@ -1,0 +1,48 @@
+name: Flask CI/CD
+
+permissions:
+  pull-requests: write
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python 3.11
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.11'
+                cache: 'pip'
+            - run: pip install .
+
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+          - uses: actions/checkout@v3
+          - name: Set up Python 3.11
+            uses: actions/setup-python@v4
+            with:
+              python-version: '3.11'
+              cache: "pip"
+          - name: Install package in dev mode
+            run: pip install .[dev]
+          - name: Install Pytest coverage
+            run: |
+              pip install pytest-cov
+          - name: Build coverage file
+            shell: bash -l {0}
+            run: |
+                pytest --cache-clear --cov=simple_flask tests/ > pytest-coverage.txt
+            # comment coverage
+          - name: Comment coverage
+            if: matrix.python-version == '3.11'
+            uses: coroo/pytest-coverage-commentator@v1.0.2
