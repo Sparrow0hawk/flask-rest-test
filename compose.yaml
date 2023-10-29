@@ -1,0 +1,21 @@
+services:
+
+  app:
+    build: .
+    environment:
+      FLASK_SQLALCHEMY_DATABASE_URI: "postgresql+pg8000://flask:password@database/shop"
+    ports:
+      - "5000:5000"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: flask
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: shop
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 5s

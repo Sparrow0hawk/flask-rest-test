@@ -24,6 +24,7 @@ dependencies = [
   "Flask",
   "SQLAlchemy",
   "gunicorn",
+  "pg8000"
 ]
 
 [project.urls]

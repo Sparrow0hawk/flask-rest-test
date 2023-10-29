@@ -9,6 +9,7 @@ def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
     app.config.from_object("flask_rest_test.config.Config")
+    app.config.from_prefixed_env()
 
     app_db.init_app(app)
 
