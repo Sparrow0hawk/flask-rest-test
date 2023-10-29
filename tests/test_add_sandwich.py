@@ -6,7 +6,6 @@ from sqlalchemy import text
 
 from flask_rest_test.extensions import app_db
 
-
 def test_add_sandwich_adds_sandwich(client: FlaskClient, app: Flask):
     post_res = client.post("/add", data=json.dumps({"name": "cheese", "count": "10"}), content_type="application/json")
 

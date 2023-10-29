@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from flask import Flask
 from sqlalchemy import Column, Engine, Integer, MetaData, String, Table, create_engine
 

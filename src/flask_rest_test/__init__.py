@@ -1,7 +1,8 @@
 from flask import Flask, Response, render_template, request
 from sqlalchemy import text
 
-from .extensions import app_db
+from flask_rest_test.db import add_tables
+from flask_rest_test.extensions import app_db
 
 
 def create_app(test_config=None) -> Flask:
@@ -15,7 +16,7 @@ def create_app(test_config=None) -> Flask:
         app.config.from_mapping(test_config)
 
     @app.route("/")
-    def index() -> Response:
+    def index() -> str:
         with app_db.engine.connect() as conn:
             res = conn.execute(text("SELECT name, count from sandwiches"))
             data = res.fetchall()
