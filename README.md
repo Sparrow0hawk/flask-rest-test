@@ -22,6 +22,6 @@ To use this repository you will need:
     ```bash
     curl -X POST http://127.0.0.1:5000/add  \
          -H 'Content-Type: application/json' \
-         -d '{"name":"marmite and cheese","count":11}'
+         -d '{"name":"marmite and cheese","count":11, "id":1}'
    ```
    
