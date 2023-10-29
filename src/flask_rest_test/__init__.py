@@ -7,7 +7,7 @@ from .extensions import app_db
 def create_app(test_config=None) -> Flask:
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app.config.from_object("flask_rest_test.config.Config")
 
     app_db.init_app(app)
 
