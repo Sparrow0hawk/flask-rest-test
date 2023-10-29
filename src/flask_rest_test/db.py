@@ -1,26 +1,32 @@
-from flask import current_app, g
-from sqlalchemy import Engine, create_engine, String, Column, MetaData, Integer, Table
+from __future__ import annotations
+
+from flask import Flask
+from sqlalchemy import Column, Engine, Integer, MetaData, String, Table, create_engine
 
 
-def get_db():
-    if 'db' not in g:
-        g.db = create_engine(current_app.config["SQLALCHEMY_DATABASE_URI"])
+class Database:
+    def __init__(self, app: Flask | None = None):
+        self.engine: Engine
 
-    return g.db
+        if app is not None:
+            self.init_app(app)
 
+    def init_app(self, app: Flask):
+        self.engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
 
-def close_db(e=None):
-    db = g.pop('db', None)
+        app.extensions["database"] = self
 
-    if db is not None:
-        db.dispose()
+    def create_database(self) -> None:
+        metadata = MetaData()
+        add_tables(metadata)
+
+        metadata.create_all(self.engine)
+
 
 def add_tables(metadata: MetaData) -> None:
-    Table("sandwiches",
-          metadata,
-          Column("name", String(length=256), nullable=False, unique=True),
-          Column("count", Integer)
-          )
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
+    Table(
+        "sandwiches",
+        metadata,
+        Column("name", String(length=256), nullable=False, unique=True),
+        Column("count", Integer),
+    )
