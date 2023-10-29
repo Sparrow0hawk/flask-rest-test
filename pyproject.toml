@@ -22,7 +22,8 @@ classifiers = [
 ]
 dependencies = [
   "Flask",
-  "SQLAlchemy"
+  "SQLAlchemy",
+  "gunicorn",
 ]
 
 [project.urls]
